@@ -11,4 +11,4 @@ This's a tempt of boost
 
 ## This is the Mr.smile, on there.
 
-**Plus: https://steemit.com/@mr-chen2050(Welcome join the community mutual vote)**
+**Plus: https://steemit.com/@mr-chen2050 (Welcome join the community mutual vote)**
