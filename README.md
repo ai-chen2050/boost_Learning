@@ -3,11 +3,11 @@ This's a tempt of boost
 
 ## statement
 
-**1、it's a opensource code.**
+1、it's a opensource code.
 
-**2、it's a club'stage of learners.**
+2、it's a club'stage of learners.
 
-**3、welcome everybody to push it's develops.**
+3、welcome everybody to push it's develops.
 
 ## This is the Mr.smile, on there.
 
