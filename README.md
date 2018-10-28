@@ -11,7 +11,11 @@ This's a tempt of boost
 
 ## This is the Mr.smile, on there.
 
-**Plus: https://steemit.com/@mr-chen2050 (Welcome to join the community and mutual vote)**
+**Plus1: https://steemit.com/@mr-chen2050 (Welcome to join the community and mutual vote)**   
+**Plus2: 在编译生成程序时，用到了什么动态链接库，需要手动将链接参数自动加上，如下：**  
+```sh
+g++ syn_timer.cpp -o syn_timer  -lboost_system  -lpthread
+```
 
 # Content 
 

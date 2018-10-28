@@ -1,6 +1,8 @@
 {
     "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "iostream": "cpp",
+        "chrono": "cpp"
     }
 }
