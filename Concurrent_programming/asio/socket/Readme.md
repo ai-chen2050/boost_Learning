@@ -1,0 +1,1 @@
+# The folder of socket is to show how to use asio to develop simple client and server programs. It's based around the **daytime protocol**, which supports both tcp and udp. 
