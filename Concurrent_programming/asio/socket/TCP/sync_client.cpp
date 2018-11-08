@@ -17,6 +17,8 @@ int main(int argc,char* argv[])
         boost::asio::io_context io_context;
         // tcp name to tcp endpoint
         tcp::resolver resolver(io_context);
+
+        // 相当于 DNS 解析器
         tcp::resolver::results_type endpoints = resolver.resolve(argv[1],"daytime");
 
         tcp::socket socket(io_context);
