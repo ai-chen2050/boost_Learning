@@ -4,21 +4,20 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/mingw-w64/mingw64/include",
-                "F:/Clion",
-                "C:/mingw-w64/mingw64/x86_64-w64-mingw32/include",
-                "C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/7.3.0/include",
-                "C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++",
-                "C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/x86_64-w64-mingw32",
-                "C:/mingw-w64/mingw64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/tr1"
+                "F:/MinGw/include/**",
+                "F:/MinGw/lib/gcc/mingw32/6.3.0/include/c++/experimental",
+                "F:/boost_1_67_0/",
+                "F:/chenCode/eos/contracts",
+                "F:/MinGw/openssl-1.1.1/include",
+                "F:/visual studio 2017/VC/Tools/MSVC/14.15.26726/include/**",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17134.0/ucrt"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "windowsSdkVersion": "10.0.14393.0",
-            "compilerPath": "C:/mingw-w64/mingw64/bin/gcc.exe",
+            "compilerPath": "F:\\MinGw\\bin\\gcc.exe",
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64"
