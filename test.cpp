@@ -1,72 +1,107 @@
+#include <ctime>
 #include <iostream>
-#include <boost/asio.hpp>
-#include <boost/thread/thread.hpp>
+#include <string>
 #include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/asio.hpp>
 
-class printer
+using boost::asio::ip::tcp;
+
+std::string make_daytime_string()
+{
+  using namespace std; // For time_t, time and ctime;
+  time_t now = time(0);
+  return ctime(&now);
+}
+
+class tcp_connection
+  : public boost::enable_shared_from_this<tcp_connection>
 {
 public:
-  printer(boost::asio::io_context& io)
-    : strand_(io),
-      timer1_(io, boost::asio::chrono::seconds(1)),
-      timer2_(io, boost::asio::chrono::seconds(1)),
-      count_(0)
-  {
-    timer1_.async_wait(boost::asio::bind_executor(strand_,
-          boost::bind(&printer::print1, this)));
+  typedef boost::shared_ptr<tcp_connection> pointer;
 
-    timer2_.async_wait(boost::asio::bind_executor(strand_,
-          boost::bind(&printer::print2, this)));
+  static pointer create(boost::asio::io_context& io_context)
+  {
+    return pointer(new tcp_connection(io_context));
   }
 
-  ~printer()
+  tcp::socket& socket()
   {
-    std::cout << "Final count is " << count_ << std::endl;
+    return socket_;
   }
 
-
-  void print1()
+  void start()
   {
-    if (count_ < 10)
-    {
-      std::cout << "Timer 1: " << count_ << std::endl;
-      ++count_;
+    message_ = make_daytime_string();
 
-      timer1_.expires_at(timer1_.expiry() + boost::asio::chrono::seconds(1));
-
-      timer1_.async_wait(boost::asio::bind_executor(strand_,
-            boost::bind(&printer::print1, this)));
-    }
-  }
-
-  void print2()
-  {
-    if (count_ < 10)
-    {
-      std::cout << "Timer 2: " << count_ << std::endl;
-      ++count_;
-
-      timer2_.expires_at(timer2_.expiry() + boost::asio::chrono::seconds(1));
-
-      timer2_.async_wait(boost::asio::bind_executor(strand_,
-            boost::bind(&printer::print2, this)));
-    }
+    boost::asio::async_write(socket_, boost::asio::buffer(message_),
+        boost::bind(&tcp_connection::handle_write, shared_from_this(),
+          boost::asio::placeholders::error,
+          boost::asio::placeholders::bytes_transferred));
   }
 
 private:
-  boost::asio::io_context::strand strand_;
-  boost::asio::steady_timer timer1_;
-  boost::asio::steady_timer timer2_;
-  int count_;
+  tcp_connection(boost::asio::io_context& io_context)
+    : socket_(io_context)
+  {
+  }
+
+  void handle_write(const boost::system::error_code& /*error*/,
+      size_t /*bytes_transferred*/)
+  {
+  }
+
+  tcp::socket socket_;
+  std::string message_;
+};
+
+class tcp_server
+{
+public:
+  tcp_server(boost::asio::io_context& io_context)
+    : acceptor_(io_context, tcp::endpoint(tcp::v4(), 13))
+  {
+    start_accept();
+  }
+
+private:
+  void start_accept()
+  {
+    tcp_connection::pointer new_connection =
+      tcp_connection::create(acceptor_.get_executor().context());
+
+    acceptor_.async_accept(new_connection->socket(),
+        boost::bind(&tcp_server::handle_accept, this, new_connection,
+          boost::asio::placeholders::error));
+  }
+
+  void handle_accept(tcp_connection::pointer new_connection,
+      const boost::system::error_code& error)
+  {
+    if (!error)
+    {
+      new_connection->start();
+    }
+
+    start_accept();
+  }
+
+  tcp::acceptor acceptor_;
 };
 
 int main()
 {
-  boost::asio::io_context io;
-  printer p(io);
-  boost::thread t(boost::bind(&boost::asio::io_context::run, &io));
-  io.run();
-  t.join();
+  try
+  {
+    boost::asio::io_context io_context;
+    tcp_server server(io_context);
+    io_context.run();
+  }
+  catch (std::exception& e)
+  {
+    std::cerr << e.what() << std::endl;
+  }
 
   return 0;
 }
