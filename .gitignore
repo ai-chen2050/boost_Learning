@@ -1,3 +1,4 @@
 .vscode
 *.json
 test.cpp
+.ycm_extra_conf.py
