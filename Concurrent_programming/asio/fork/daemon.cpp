@@ -63,7 +63,7 @@ int main(int argc, char const *argv[])
         );
 
         // Inform the io_context that we are about to become a daemon.
-        io_context.notify_fork(boost::asio::io_context::fork_perpare);
+        io_context.notify_fork(boost::asio::io_context::fork_prepare);
 
         // Fork the process and have the parent exit.Forking a new process is
         // also a prerequisite for the subsequent call to setsid().
@@ -117,7 +117,7 @@ int main(int argc, char const *argv[])
         // Send standard output to a log file.
         const char* output = "/tmp/asio.daemon.out";
         const int flags = O_WRONLY | O_CREAT | O_APPEND;
-        const mode_t mode = S_IRUSR | S_IWUSR | S_RGRP | S_IROTH;
+        const mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
         if (open(output, flags, mode) < 0)
         {
             syslog(LOG_ERR | LOG_USER, "Uable to open output file %s: %m",output);
