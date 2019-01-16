@@ -75,7 +75,11 @@ int main(int argc,char* argv[])
         }
         
         boost::asio::io_context io_context;
+<<<<<<< HEAD
         Sender s(io_context,boost::asio::ip::make_address(argv[1]));
+=======
+        Sender s(io_context,boost::asio::ip::make_address(arg[1]));
+>>>>>>> 8738960c745bb240659f86851c3544eb403a450c
         io_context.run();
     }
     catch(const std::exception& e)
